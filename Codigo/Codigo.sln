@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralService", "CentralService\CentralService.csproj", "{A5CDA0D8-8684-4CAD-AB7D-A68B84DDDA01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatService", "ChatService\ChatService.csproj", "{38D85215-457B-444D-8E22-84B35C3EF756}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5CDA0D8-8684-4CAD-AB7D-A68B84DDDA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5CDA0D8-8684-4CAD-AB7D-A68B84DDDA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5CDA0D8-8684-4CAD-AB7D-A68B84DDDA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5CDA0D8-8684-4CAD-AB7D-A68B84DDDA01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38D85215-457B-444D-8E22-84B35C3EF756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D85215-457B-444D-8E22-84B35C3EF756}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D85215-457B-444D-8E22-84B35C3EF756}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D85215-457B-444D-8E22-84B35C3EF756}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
