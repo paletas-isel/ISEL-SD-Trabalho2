@@ -15,7 +15,7 @@ namespace CentralServiceProject
         Theme[] GetThemes();
 
         [OperationContract]
-        User[] LogOn(string themeName, string userName);
+        User[] LogOn(string themeName, string userName, Uri address);
 
         [OperationContract]
         void LogOff(string themeName, long id);

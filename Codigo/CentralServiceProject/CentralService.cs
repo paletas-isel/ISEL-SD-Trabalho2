@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.ServiceModel;
+using System.Threading;
 
 namespace CentralServiceProject
 {
@@ -27,13 +28,13 @@ namespace CentralServiceProject
             return _container.GetThemes().ToArray();
         }
 
-        public User[] LogOn(string themeName, string userName)
+        public User[] LogOn(string themeName, string userName, Uri address)
         {
             Console.WriteLine("LogOn Enter");
 
             User self;
             if ((self = _container.GetUser(userName)) == null)
-                self = new User(GenerateUniqueId(), userName, OperationContext.Current.Channel.RemoteAddress.Uri);
+                self = new User(GenerateUniqueId(), userName, address);
 
             var theme = _container.GetTheme(themeName);
 
@@ -44,6 +45,17 @@ namespace CentralServiceProject
 
             Console.WriteLine("Username {0} got {1} new users.", userName, temp.Length); 
             
+            Thread t = new Thread(() =>
+                                      {
+                                         foreach(User user in _container.GetUsers(theme))
+                                         {
+                                             if(!user.Equals(self))
+                                                user.Callback.OnUserJoined(self);
+                                         }
+                                      });
+
+            t.Start();
+
             Console.WriteLine("LogOn Exit");
 
             return temp;

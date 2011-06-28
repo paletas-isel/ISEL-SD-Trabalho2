@@ -18,6 +18,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="themeName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="address" nillable="true" type="xs:anyURI" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

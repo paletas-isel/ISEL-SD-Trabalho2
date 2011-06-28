@@ -1,5 +1,6 @@
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using ChatServiceProject.Tracker;
 
 namespace ChatServiceProject
 {
@@ -18,6 +19,9 @@ namespace ChatServiceProject
 
         [OperationContract]
         void Unsubscribe();
+
+        [OperationContract]
+        Theme[] GetThemes();
     }
 
     public interface IMessageReceivedChannel

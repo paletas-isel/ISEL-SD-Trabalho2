@@ -78,10 +78,16 @@ namespace ChatServiceProject.Tracker {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ChatServiceProject.Tracker.Theme[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ChatServiceProject.Tracker.Theme))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ChatServiceProject.Tracker.User[]))]
     public partial class User : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private object CallbackField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Uri ChatServiceField;
@@ -99,6 +105,19 @@ namespace ChatServiceProject.Tracker {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public object Callback {
+            get {
+                return this.CallbackField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CallbackField, value) != true)) {
+                    this.CallbackField = value;
+                    this.RaisePropertyChanged("Callback");
+                }
             }
         }
         
@@ -159,7 +178,7 @@ namespace ChatServiceProject.Tracker {
         ChatServiceProject.Tracker.Theme[] GetThemes();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICentralService/LogOn", ReplyAction="http://tempuri.org/ICentralService/LogOnResponse")]
-        ChatServiceProject.Tracker.User[] LogOn(string themeName, string userName);
+        ChatServiceProject.Tracker.User[] LogOn(string themeName, string userName, System.Uri address);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICentralService/LogOff", ReplyAction="http://tempuri.org/ICentralService/LogOffResponse")]
         void LogOff(string themeName, long id);
@@ -204,8 +223,8 @@ namespace ChatServiceProject.Tracker {
             return base.Channel.GetThemes();
         }
         
-        public ChatServiceProject.Tracker.User[] LogOn(string themeName, string userName) {
-            return base.Channel.LogOn(themeName, userName);
+        public ChatServiceProject.Tracker.User[] LogOn(string themeName, string userName, System.Uri address) {
+            return base.Channel.LogOn(themeName, userName, address);
         }
         
         public void LogOff(string themeName, long id) {

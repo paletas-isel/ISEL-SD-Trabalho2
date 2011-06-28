@@ -33,8 +33,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,20 +57,31 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\Translator\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Service References\ChatServiceRemote\ChatServiceProject.xsd">
+    <None Include="Service References\ChatServiceRemote\CentralServiceProject.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ChatServiceRemote\service.wsdl" />
-    <None Include="Service References\ChatServiceRemote\service.xsd">
+    <None Include="Service References\ChatServiceRemote\ChatServiceProject.ChatServiceRemote.Theme.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ChatServiceRemote\ChatServiceProject1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ChatServiceRemote\service1.xsd">
+    <None Include="Service References\ChatServiceRemote\service1.wsdl" />
+    <None Include="Service References\ChatServiceRemote\service2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ChatServiceRemote\service21.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Tracker\CentralServiceProject.xsd">
@@ -87,10 +100,31 @@
     <None Include="Service References\Tracker\service1.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\Translator\ChatServiceProject.Translator.GetTranslationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Translator\ChatServiceProject.Translator.TranslateArrayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Translator\soap.wsdl" />
+    <None Include="Service References\Translator\soap.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Translator\soap1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Translator\soap2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Translator\soap3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Translator\SoapService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ChatServiceRemote\" />
     <WCFMetadataStorage Include="Service References\Tracker\" />
+    <WCFMetadataStorage Include="Service References\Translator\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Tracker\configuration91.svcinfo" />
@@ -112,6 +146,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ChatServiceRemote\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Translator\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Translator\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Translator\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
