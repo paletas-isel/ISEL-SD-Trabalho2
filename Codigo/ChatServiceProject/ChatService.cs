@@ -1,25 +1,24 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ServiceModel;
 using ChatServiceProject.ChatServiceRemote;
 using ChatServiceProject.Tracker;
 
 namespace ChatServiceProject
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "ChatService" in code, svc and config file together.
     public class ChatService : IChatService
     {
         private IMessageReceivedChannel _consumers;
         private readonly LinkedList<ChatServiceClient> _chatMembers = new LinkedList<ChatServiceClient>();
-        
+
         private User _user;
-        
+
         #region Implementation of IChatService
 
         public bool SendMessage(string message)
         {
             foreach (var chatMember in _chatMembers)
             {
-                chatMember.ReceiveMessage(new ChatServiceProject.ChatServiceRemote.Message{UserName = _user.Name, Content = message});
+                chatMember.ReceiveMessage(new ChatServiceProject.ChatServiceRemote.Message { UserName = _user.Name, Content = message });
             }
 
             return true;
@@ -36,7 +35,7 @@ namespace ChatServiceProject
         {
             var callback = OperationContext.Current.GetCallbackChannel<IMessageReceivedChannel>();
             _consumers = callback;
-            
+
             var client = new CentralServiceClient(new InstanceContext(new RegisterUser()));
             User self;
 
@@ -68,7 +67,7 @@ namespace ChatServiceProject
 
         public void OnUserJoined(User user)
         {
-            
+
         }
 
         #endregion
