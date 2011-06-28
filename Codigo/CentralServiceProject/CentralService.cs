@@ -4,9 +4,11 @@ using System.ServiceModel;
 
 namespace CentralServiceProject
 {
+    [ServiceBehavior(IncludeExceptionDetailInFaults = true, ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     class CentralService : ICentralService
     {
         private long _currentId;
+       
         private readonly ThemesContainer _container;
 
         public CentralService()
@@ -25,19 +27,26 @@ namespace CentralServiceProject
             return _container.GetThemes().ToArray();
         }
 
-        public User[] LogOn(string themeName, string userName, out User self)
+        public User[] LogOn(string themeName, string userName)
         {
             Console.WriteLine("LogOn Enter");
 
+            User self;
             if ((self = _container.GetUser(userName)) == null)
                 self = new User(GenerateUniqueId(), userName, OperationContext.Current.Channel.RemoteAddress.Uri);
 
             var theme = _container.GetTheme(themeName);
 
-            _container.AddUser(theme, new UserDecorator(self, OperationContext.Current.GetCallbackChannel<IUserCallback>()));
+            self.Callback = OperationContext.Current.GetCallbackChannel<IUserCallback>();
+            _container.AddUser(theme, self);
 
+            var temp = new[] {self}.Concat(_container.GetUsers(theme).Where(u => !self.Equals(u))).ToArray();
+
+            Console.WriteLine("Username {0} got {1} new users.", userName, temp.Length); 
+            
             Console.WriteLine("LogOn Exit");
-            return _container.GetUsers(theme).ToArray();
+
+            return temp;
         }
 
         public void LogOff(string themeName, long id)

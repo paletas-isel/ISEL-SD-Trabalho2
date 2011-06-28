@@ -159,7 +159,7 @@ namespace ChatServiceProject.Tracker {
         ChatServiceProject.Tracker.Theme[] GetThemes();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICentralService/LogOn", ReplyAction="http://tempuri.org/ICentralService/LogOnResponse")]
-        ChatServiceProject.Tracker.User[] LogOn(out ChatServiceProject.Tracker.User self, string themeName, string userName);
+        ChatServiceProject.Tracker.User[] LogOn(string themeName, string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICentralService/LogOff", ReplyAction="http://tempuri.org/ICentralService/LogOffResponse")]
         void LogOff(string themeName, long id);
@@ -204,8 +204,8 @@ namespace ChatServiceProject.Tracker {
             return base.Channel.GetThemes();
         }
         
-        public ChatServiceProject.Tracker.User[] LogOn(out ChatServiceProject.Tracker.User self, string themeName, string userName) {
-            return base.Channel.LogOn(out self, themeName, userName);
+        public ChatServiceProject.Tracker.User[] LogOn(string themeName, string userName) {
+            return base.Channel.LogOn(themeName, userName);
         }
         
         public void LogOff(string themeName, long id) {

@@ -6,84 +6,110 @@ namespace CentralServiceProject
 {
     public class ThemesContainer
     {
-        private readonly IDictionary<Theme, LinkedList<UserDecorator>> _themes;
+        private readonly IDictionary<Theme, LinkedList<User>> _themes;
 
         public ThemesContainer(IEnumerable<Theme> themes = null)
         {
-            _themes = new Dictionary<Theme, LinkedList<UserDecorator>>();
+            _themes = new Dictionary<Theme, LinkedList<User>>();
             if(themes != null)
             {
                 foreach(var theme in themes)
                 {
-                    _themes.Add(theme, new LinkedList<UserDecorator>());
+                    _themes.Add(theme, new LinkedList<User>());
                 }
             }
         }
 
         public void AddTheme(Theme theme)
         {
-            if(!_themes.ContainsKey(theme))
+            lock (this)
             {
-                _themes.Add(theme, new LinkedList<UserDecorator>());
-            }
-            else
-            {
-                throw new InvalidOperationException("Theme already exists!");
-            }
-        }
-
-        public void AddUser(Theme theme, UserDecorator user)
-        {
-            if (_themes.ContainsKey(theme))
-            {
-                var themeUserContainer = _themes[theme];
-                if(!themeUserContainer.Contains(user))
+                if (!_themes.ContainsKey(theme))
                 {
-                    themeUserContainer.AddLast(user);
+                    _themes.Add(theme, new LinkedList<User>());
                 }
                 else
                 {
-                    throw new InvalidOperationException("User already exists!");
+                    throw new InvalidOperationException("Theme already exists!");
                 }
             }
-            else
+        }
+
+        public void AddUser(Theme theme, User user)
+        {
+            lock (this)
             {
-                throw new InvalidOperationException("Theme doesn't exist!");
+                if (_themes.ContainsKey(theme))
+                {
+                    var themeUserContainer = _themes[theme];
+                    if (!themeUserContainer.Contains(user))
+                    {
+                        themeUserContainer.AddLast(user);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("User already exists!");
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException("Theme doesn't exist!");
+                }
             }
         }
 
         public IEnumerable<User> GetUsers(Theme theme)
         {
-            if (_themes.ContainsKey(theme))
+            lock (this)
             {
-                return _themes[theme];
+                if (_themes.ContainsKey(theme))
+                {
+                    return _themes[theme];
+                }
+                throw new InvalidOperationException("Theme doesn't exist!");
             }
-            throw new InvalidOperationException("Theme doesn't exist!");
         }
 
         public IEnumerable<Theme> GetThemes()
         {
-            return _themes.Keys;
+            lock (this)
+            {
+                return _themes.Keys;
+            }
         }
 
         public Theme GetTheme(string name)
         {
-            return _themes.Keys.SingleOrDefault(p => p.Name.Equals(name));
+            lock (this)
+            {
+                return _themes.Keys.SingleOrDefault(p => p.Name.Equals(name));
+            }
         }
 
-        public UserDecorator GetUser(long id)
+        public User GetUser(long id)
         {
-            return _themes.Values.SelectMany(allThemeUsers => allThemeUsers).FirstOrDefault(user => user.Id == id);
+            lock (this)
+            {
+                return _themes.Values.SelectMany(allThemeUsers => allThemeUsers).FirstOrDefault(user => user.Id == id);
+            }
         }
 
         public User GetUser(string name)
         {
-            return _themes.Values.SelectMany(allThemeUsers => allThemeUsers).FirstOrDefault(user => user.Name.Equals(name));
+            lock (this)
+            {
+                return
+                    _themes.Values.SelectMany(allThemeUsers => allThemeUsers).FirstOrDefault(
+                        user => user.Name.Equals(name));
+            }
         }
 
-        public void RemoveUser(Theme theme, UserDecorator user)
+        public void RemoveUser(Theme theme, User user)
         {
-            _themes[theme].Remove(user);
+            lock (this)
+            {
+                _themes[theme].Remove(user);
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace CentralServiceProject
         Theme[] GetThemes();
 
         [OperationContract]
-        User[] LogOn(string themeName, string userName, out User self);
+        User[] LogOn(string themeName, string userName);
 
         [OperationContract]
         void LogOff(string themeName, long id);
@@ -48,6 +48,9 @@ namespace CentralServiceProject
 
         [DataMember]
         public Uri ChatService { get; set; }
+    
+        [DataMember]
+        public IUserCallback Callback { get; set; }
 
         public override int GetHashCode()
         {
@@ -57,6 +60,11 @@ namespace CentralServiceProject
         public override bool Equals(object obj)
         {
             var otherUser = obj as User;
+            return Equals(otherUser);
+        }
+
+        public bool Equals(User otherUser)
+        {
             if (otherUser != null)
                 return Id == otherUser.Id;
             return false;
