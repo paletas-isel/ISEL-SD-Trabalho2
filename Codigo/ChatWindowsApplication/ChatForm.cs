@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.Windows.Forms;
 using ChatServiceProject;
+using ChatWindowsApplication.ChatService;
 
 namespace ChatWindowsApplication
 {
@@ -13,10 +14,19 @@ namespace ChatWindowsApplication
 
         public ChatServiceClient Tracker { get; private set; }
 
-        public ChatForm()
+        private Uri _uri;
+
+        public ChatForm(Uri uri)
         {
             InitializeComponent();
-            Tracker = new ChatServiceClient(new InstanceContext(new MessageReceived(this)));
+            _uri = uri;
+            CreateTracker();
+            Closing += (_, p) => Tracker.Unsubscribe();
+        }
+
+        public void CreateTracker()
+        {
+            Tracker = new ChatServiceClient(new InstanceContext(new MessageReceived(this)), new WSDualHttpBinding(), new EndpointAddress(_uri));
         }
 
         private void ChatForm_Load(object sender, EventArgs e)
@@ -27,7 +37,21 @@ namespace ChatWindowsApplication
 
         public void AddMessage(string userName, string content)
         {
-            chat.Items.Add(String.Format("User {0} said {1}.", userName, content));
+            chat.Items.Add(String.Format("{0} said {1}.", userName, content));
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Tracker.SendMessage(message.Text);
+            }
+            catch(CommunicationException)
+            {
+                CreateTracker();
+                Tracker.SendMessage(message.Text);
+            }
+            AddMessage("You", message.Text);
         }
     }
 

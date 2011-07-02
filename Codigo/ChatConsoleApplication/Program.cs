@@ -56,7 +56,7 @@ namespace ChatConsoleApplication
 
             Console.Write("User: ");
             string user = Console.ReadLine();
-            chatClient.Subscribe(user);
+            chatClient.Subscribe(user, "Sports", "pt");
 
             string read;
             do

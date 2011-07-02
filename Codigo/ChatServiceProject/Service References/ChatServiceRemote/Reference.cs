@@ -76,6 +76,51 @@ namespace ChatServiceProject.ChatServiceRemote {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserFault", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
+    [System.SerializableAttribute()]
+    public partial class UserFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ReasonField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Reason {
+            get {
+                return this.ReasonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ReasonField, value) != true)) {
+                    this.ReasonField = value;
+                    this.RaisePropertyChanged("Reason");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Theme", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
     [System.SerializableAttribute()]
     public partial class Theme : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -146,9 +191,11 @@ namespace ChatServiceProject.ChatServiceRemote {
         bool ReceiveMessage(ChatServiceProject.ChatServiceRemote.Message message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Subscribe", ReplyAction="http://tempuri.org/IChatService/SubscribeResponse")]
-        void Subscribe(string username);
+        [System.ServiceModel.FaultContractAttribute(typeof(ChatServiceProject.ChatServiceRemote.UserFault), Action="http://tempuri.org/IChatService/SubscribeUserFaultFault", Name="UserFault", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
+        void Subscribe(string username, string theme, string language);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Unsubscribe", ReplyAction="http://tempuri.org/IChatService/UnsubscribeResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ChatServiceProject.ChatServiceRemote.UserFault), Action="http://tempuri.org/IChatService/UnsubscribeUserFaultFault", Name="UserFault", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
         void Unsubscribe();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetThemes", ReplyAction="http://tempuri.org/IChatService/GetThemesResponse")]
@@ -198,8 +245,8 @@ namespace ChatServiceProject.ChatServiceRemote {
             return base.Channel.ReceiveMessage(message);
         }
         
-        public void Subscribe(string username) {
-            base.Channel.Subscribe(username);
+        public void Subscribe(string username, string theme, string language) {
+            base.Channel.Subscribe(username, theme, language);
         }
         
         public void Unsubscribe() {

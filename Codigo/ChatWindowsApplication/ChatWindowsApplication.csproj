@@ -100,6 +100,9 @@
     <None Include="Service References\ChatService\ChatServiceProject.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\ChatService\ChatWindowsApplication.ChatService.Theme.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\ChatService\service.wsdl" />
     <None Include="Service References\ChatService\service.xsd">
       <SubType>Designer</SubType>
@@ -110,12 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ChatServiceProject\ChatServiceProject.csproj">
-      <Project>{4A1AD487-155E-421D-B230-66D698E4F225}</Project>
-      <Name>ChatServiceProject</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ChatService\" />
@@ -131,6 +128,12 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChatServiceProject\ChatServiceProject.csproj">
+      <Project>{4A1AD487-155E-421D-B230-66D698E4F225}</Project>
+      <Name>ChatServiceProject</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

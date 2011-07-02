@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.chat = new System.Windows.Forms.ListBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.message = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -41,12 +41,12 @@
             this.chat.Size = new System.Drawing.Size(418, 316);
             this.chat.TabIndex = 2;
             // 
-            // textBox1
+            // message
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 334);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(337, 20);
-            this.textBox1.TabIndex = 3;
+            this.message.Location = new System.Drawing.Point(12, 334);
+            this.message.Name = "message";
+            this.message.Size = new System.Drawing.Size(337, 20);
+            this.message.TabIndex = 3;
             // 
             // button1
             // 
@@ -56,6 +56,7 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "Send";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ChatForm
             // 
@@ -63,7 +64,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(439, 363);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.message);
             this.Controls.Add(this.chat);
             this.Name = "ChatForm";
             this.Text = "Chat";
@@ -76,7 +77,7 @@
         #endregion
 
         private System.Windows.Forms.ListBox chat;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox message;
         private System.Windows.Forms.Button button1;
     }
 }

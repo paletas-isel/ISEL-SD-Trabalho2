@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="92de1c96-061a-4673-a39e-848eb3942dcf" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b941b577-25fe-4439-9b00-100fb5c02818" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -21,11 +21,11 @@
     <MetadataSource Address="http://localhost:8003/ChatService/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="49a05817-3e21-44eb-9da9-9c79085f4279" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="32c52c75-f9ce-4534-a7d7-e059c4cdba75" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="182d5e54-bc85-44c1-b1b9-8c7fc7bcada4" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
-    <MetadataFile FileName="ChatServiceProject.xsd" MetadataType="Schema" ID="138084af-286c-4e12-bada-7527c4db8eb8" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
-    <MetadataFile FileName="CentralServiceProject.xsd" MetadataType="Schema" ID="5cab3c79-2ef4-46f2-8cdd-898a06e4af21" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="1524efda-8a83-4c00-b7f0-f5c3ed57940b" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="bb7d1879-a654-4446-a33d-c1d523e16af3" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="3ffde145-81a4-4f04-aae5-a38f38700b84" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
+    <MetadataFile FileName="ChatServiceProject.xsd" MetadataType="Schema" ID="fa6fab9c-d624-4647-9d2c-c23bae433260" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
+    <MetadataFile FileName="CentralServiceProject.xsd" MetadataType="Schema" ID="f05e4db1-94ba-4090-8a7c-555e51f76293" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

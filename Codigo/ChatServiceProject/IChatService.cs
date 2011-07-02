@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using ChatServiceProject.Tracker;
@@ -15,9 +16,11 @@ namespace ChatServiceProject
         bool ReceiveMessage(Message message);
 
         [OperationContract]
-        void Subscribe(string username);
+        [FaultContract(typeof(UserFault))]
+        void Subscribe(string username, string theme, string language);
 
         [OperationContract]
+        [FaultContract(typeof(UserFault))]
         void Unsubscribe();
 
         [OperationContract]

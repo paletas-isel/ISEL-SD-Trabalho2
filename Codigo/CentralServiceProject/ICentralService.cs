@@ -15,9 +15,11 @@ namespace CentralServiceProject
         Theme[] GetThemes();
 
         [OperationContract]
+        [FaultContract(typeof(UserFault))]
         User[] LogOn(string themeName, string userName, Uri address);
 
         [OperationContract]
+        [FaultContract(typeof(UserFault))]
         void LogOff(string themeName, long id);
     }
 
@@ -98,5 +100,12 @@ namespace CentralServiceProject
                 return Name.Equals(otherTheme.Name);
             return false;
         }
+    }
+
+    [DataContract]
+    public class UserFault
+    {
+        [DataMember]
+        public String Reason { get; set; }
     }
 }

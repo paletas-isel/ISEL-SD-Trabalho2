@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
@@ -39,19 +40,51 @@ namespace CentralServiceProject
             var theme = _container.GetTheme(themeName);
 
             self.Callback = OperationContext.Current.GetCallbackChannel<IUserCallback>();
-            _container.AddUser(theme, self);
-
+            try
+            {
+                _container.AddUser(theme, self);
+            }
+            catch(InvalidOperationException e)
+            {
+                UserFault fault = new UserFault { Reason = e.Message};
+                Console.WriteLine("Faulted!");
+                throw new FaultException<UserFault>(fault);
+            }
             var temp = new[] {self}.Concat(_container.GetUsers(theme).Where(u => !self.Equals(u))).ToArray();
 
             Console.WriteLine("Username {0} got {1} new users.", userName, temp.Length); 
             
             Thread t = new Thread(() =>
                                       {
-                                         foreach(User user in _container.GetUsers(theme))
-                                         {
-                                             if(!user.Equals(self))
-                                                user.Callback.OnUserJoined(self);
-                                         }
+                                        LinkedList<User> toRemove = new LinkedList<User>();
+                                        foreach(User user in _container.GetUsers(theme))
+                                        {
+                                            try
+                                            {
+                                                if (!user.Equals(self))
+                                                    user.Callback.OnUserJoined(self);
+                                            }
+                                            catch(TimeoutException e)
+                                            {
+                                                Console.WriteLine(e.Message);
+                                                toRemove.Remove(user);
+                                            }
+                                            catch(CommunicationException e)
+                                            {
+                                                Console.WriteLine(e.Message);
+                                                toRemove.Remove(user);
+                                            }
+                                            catch(ObjectDisposedException e)
+                                            {
+                                                Console.WriteLine(e.Message);
+                                                toRemove.Remove(user);
+                                            }
+                                        }
+
+                                        foreach (User user in toRemove)
+                                        {
+                                            _container.RemoveUser(theme, user);
+                                        }
                                       });
 
             t.Start();
@@ -63,9 +96,25 @@ namespace CentralServiceProject
 
         public void LogOff(string themeName, long id)
         {
-            var user = _container.GetUser(id);
+            Console.WriteLine("LogOff Enter");
+
+            User user;
+            try
+            {
+                user = _container.GetUser(id);
+            }
+            catch (InvalidOperationException e)
+            {
+                UserFault fault = new UserFault { Reason = e.Message };
+                throw new FaultException<UserFault>(fault);
+            }
+
+            Console.WriteLine("User {0}", user.Name);
+
             var theme = _container.GetTheme(themeName);
             _container.RemoveUser(theme, user);
+
+            Console.WriteLine("LogOn Exit");
         }
 
         #endregion

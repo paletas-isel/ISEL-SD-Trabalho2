@@ -30,7 +30,7 @@ namespace ChatWindowsApplication
                 {
                     // Open the ServiceHost to create listeners and start listening for messages.
                     serviceHost.Open();
-                    Console.WriteLine("[SERVICE] Service is starting!");
+                    MessageBox.Show("[SERVICE] Service is starting!");
 
                     uri =
                         serviceHost.Description.Endpoints.SingleOrDefault(
@@ -46,16 +46,23 @@ namespace ChatWindowsApplication
                         }
                         catch (ThreadInterruptedException)
                         {
-                            Console.WriteLine("[SERVICE] Service is ending!");
+                            MessageBox.Show("[SERVICE] Service is ending!");
                         }
                     }
 
                 }
             });
 
+            hosting.Start();
+            mReset.Wait();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ChatForm());
+
+            ChatForm form = new ChatForm(uri);
+            form.Closed += (_, p) => hosting.Interrupt();
+
+            Application.Run(form);
         }
     }
 }

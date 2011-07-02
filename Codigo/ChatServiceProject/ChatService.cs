@@ -6,6 +6,8 @@ using System.Threading;
 using ChatServiceProject.ChatServiceRemote;
 using ChatServiceProject.Tracker;
 using ChatServiceProject.Translator;
+using Theme = ChatServiceProject.Tracker.Theme;
+using UserFault = ChatServiceProject.ChatServiceRemote.UserFault;
 
 namespace ChatServiceProject
 {
@@ -16,21 +18,42 @@ namespace ChatServiceProject
         private readonly LinkedList<ChatServiceClient> _chatMembers = new LinkedList<ChatServiceClient>();
 
         private User _user;
+        private string _theme;
         private CentralServiceClient _client;
 
         private LanguageServiceClient _translator = new LanguageServiceClient();
-        
+        private string _language;
+
         #region Implementation of IChatService
 
         public bool SendMessage(string message)
         {
-            Console.WriteLine("Sending {0}.", message);
-
-            Thread sendData = new Thread(() =>
+            var sendData = new Thread(() =>
             {
+                LinkedList<ChatServiceClient> toRemove = new LinkedList<ChatServiceClient>();
                 foreach (var chatMember in _chatMembers)
                 {
-                    chatMember.ReceiveMessage(new ChatServiceRemote.Message { UserName = _user.Name, Content = message });
+                    try
+                    {
+                        chatMember.ReceiveMessage(new ChatServiceRemote.Message { UserName = _user.Name, Content = message });
+                    }
+                    catch(CommunicationException)
+                    {
+                        toRemove.AddLast(chatMember);
+                    }
+                    catch(TimeoutException)
+                    {
+                        toRemove.AddLast(chatMember);
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        toRemove.Remove(chatMember);
+                    }
+                }
+
+                foreach(var chatMember in toRemove)
+                {
+                    _chatMembers.Remove(chatMember);
                 }
             });
 
@@ -40,29 +63,29 @@ namespace ChatServiceProject
 
         public bool ReceiveMessage(Message message)
         {
-            Console.WriteLine("[SERVICE] Message \"{0}\" received from {1}.", message.Content, message.UserName);
-
-            message.Content = _translator.Translate("F4E6E0444F32B660BED9908E9744594B53D2E864", message.Content, "", "en", "text/plain", "general");
+            message.Content = _translator.Translate("F4E6E0444F32B660BED9908E9744594B53D2E864", message.Content, "", _language, "text/plain", "general");
 
             _clientCallback.OnMensageReceived(message);
             
             return true;    
         }
 
-        public void Subscribe(string username)
+        public void Subscribe(string username, string theme, string language)
         {
             _client = new CentralServiceClient(new InstanceContext(new RegisterUser(_chatMembers)));
             var callback = OperationContext.Current.GetCallbackChannel<IMessageReceivedChannel>();
             _clientCallback = callback;
 
+            _language = language;
+
             User self;
 
-            IEnumerable<User> members = _client.LogOn("Sports", username, OperationContext.Current.EndpointDispatcher.EndpointAddress.Uri);
+            IEnumerable<User> members = _client.LogOn(theme, username, OperationContext.Current.EndpointDispatcher.EndpointAddress.Uri);
 
             self = members.ElementAt(0);
             members = members.Skip(1);
 
-            InstanceContext context = new InstanceContext(new MessageReceived());
+            InstanceContext context = new InstanceContext(new FakeCallback());
             WSDualHttpBinding binding = new WSDualHttpBinding();
             foreach (var s in members.Select((u, i) => new ChatServiceClient(   context,
                                                                                 binding,
@@ -71,19 +94,41 @@ namespace ChatServiceProject
                 _chatMembers.AddLast(s);
             }
 
+            _theme = theme;
             _user = self;
         }
 
         public void Unsubscribe()
         {
             _clientCallback = null;
+            
+            try
+            {
+                _client.LogOff(_theme, _user.Id);
+            }
+            catch(CommunicationException)
+            {
+                _client = new CentralServiceClient(new InstanceContext(new RegisterUser(_chatMembers)));
+                _client.LogOff(_theme, _user.Id);
+            }
 
             _client.Close();
         }
 
         public Theme[] GetThemes()
         {
-            return _client.GetThemes();
+            if (_client == null) 
+                _client = new CentralServiceClient(new InstanceContext(new RegisterUser(_chatMembers)));
+            
+            try
+            {
+                return _client.GetThemes();
+            }
+            catch(CommunicationException)
+            {
+                _client = new CentralServiceClient(new InstanceContext(new RegisterUser(_chatMembers)));
+                return _client.GetThemes();
+            }
         }
 
         #endregion
@@ -103,7 +148,7 @@ namespace ChatServiceProject
         public void OnUserJoined(User user)
         {
             Console.WriteLine("New user joined {0}.", user.Name);
-            _clients.AddLast(new ChatServiceClient(new InstanceContext(new MessageReceived()), 
+            _clients.AddLast(new ChatServiceClient(new InstanceContext(new FakeCallback()), 
                                                    new WSDualHttpBinding(),
                                                    new EndpointAddress(user.ChatService)));
         }
@@ -111,13 +156,12 @@ namespace ChatServiceProject
         #endregion
     }
 
-    public class MessageReceived : IChatServiceCallback
+    public class FakeCallback : IChatServiceCallback
     {
         #region Implementation of IChatServiceCallback
 
         public void OnMensageReceived(ChatServiceRemote.Message message)
         {
-            Console.WriteLine("[SERVICE1] Message \"{0}\" received from {1}.", message.Content, message.UserName); 
         }
 
         #endregion

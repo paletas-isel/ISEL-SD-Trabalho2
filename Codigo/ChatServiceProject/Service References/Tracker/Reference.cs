@@ -81,6 +81,7 @@ namespace ChatServiceProject.Tracker {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(ChatServiceProject.Tracker.Theme[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(ChatServiceProject.Tracker.Theme))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(ChatServiceProject.Tracker.User[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ChatServiceProject.Tracker.UserFault))]
     public partial class User : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -170,6 +171,51 @@ namespace ChatServiceProject.Tracker {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserFault", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
+    [System.SerializableAttribute()]
+    public partial class UserFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ReasonField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Reason {
+            get {
+                return this.ReasonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ReasonField, value) != true)) {
+                    this.ReasonField = value;
+                    this.RaisePropertyChanged("Reason");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Tracker.ICentralService", CallbackContract=typeof(ChatServiceProject.Tracker.ICentralServiceCallback))]
     public interface ICentralService {
@@ -178,9 +224,11 @@ namespace ChatServiceProject.Tracker {
         ChatServiceProject.Tracker.Theme[] GetThemes();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICentralService/LogOn", ReplyAction="http://tempuri.org/ICentralService/LogOnResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ChatServiceProject.Tracker.UserFault), Action="http://tempuri.org/ICentralService/LogOnUserAlreadyExists", Name="UserAlreadyExists")]
         ChatServiceProject.Tracker.User[] LogOn(string themeName, string userName, System.Uri address);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICentralService/LogOff", ReplyAction="http://tempuri.org/ICentralService/LogOffResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ChatServiceProject.Tracker.UserFault), Action="http://tempuri.org/ICentralService/LogOffUserFaultFault", Name="UserFault", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
         void LogOff(string themeName, long id);
     }
     
