@@ -15,11 +15,11 @@ namespace CentralServiceProject
         Theme[] GetThemes();
 
         [OperationContract]
-        [FaultContract(typeof(UserFault))]
+        [FaultContract(typeof(InvalidOperationException))]
         User[] LogOn(string themeName, string userName, Uri address);
 
         [OperationContract]
-        [FaultContract(typeof(UserFault))]
+        [FaultContract(typeof(InvalidOperationException))]
         void LogOff(string themeName, long id);
     }
 
@@ -27,6 +27,9 @@ namespace CentralServiceProject
     {
         [OperationContract(IsOneWay = true)]
         void OnUserJoined(User user);
+
+        [OperationContract(IsOneWay = true)]
+        void OnUserLeft(User user);
     }
 
     // Use a data contract as illustrated in the sample below to add composite types to service operations.

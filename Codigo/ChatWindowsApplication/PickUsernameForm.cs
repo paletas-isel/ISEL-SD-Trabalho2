@@ -32,29 +32,23 @@ namespace ChatServiceProject
             int idx;
             _form.Language = lang.Substring(idx = (lang.IndexOf('(') + 1), lang.IndexOf(')') - idx);
 
-            bool tryagain = false;
-            do
+            try
             {
-                try
-                {
-                    _form.Tracker.Subscribe(username.Text, themes.SelectedItem.ToString(), _form.Language);
-                }
-                catch (FaultException<UserFault> p)
-                {
-                    username.Text = p.Detail.Reason;
-                    username.SelectAll();
-                    username.Enabled = true;
-                    language.Enabled = true;
-                    themes.Enabled = true;
-                }
-                catch (CommunicationException)
-                {
-                    _form.CreateTracker();
-                    tryagain = true;
-                } 
-            } while (tryagain);
-            
-            this.Close();
+                _form.Tracker.Subscribe(username.Text, themes.SelectedItem.ToString(), _form.Language);
+                Close();
+            }
+            catch (FaultException<InvalidOperationException> p)
+            {
+                username.Text = p.Detail.Message;
+                username.SelectAll();
+                username.Enabled = true;
+                language.Enabled = true;
+                themes.Enabled = true;
+            }
+            catch (CommunicationException)
+            {
+                _form.CreateTracker();
+            } 
         }
 
         private void PickUsernameForm_Load(object sender, EventArgs e)

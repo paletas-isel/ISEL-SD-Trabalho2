@@ -34,23 +34,26 @@ namespace CentralServiceProject
             Console.WriteLine("LogOn Enter");
 
             User self;
-            if ((self = _container.GetUser(userName)) == null)
-                self = new User(GenerateUniqueId(), userName, address);
-
-            var theme = _container.GetTheme(themeName);
-
-            self.Callback = OperationContext.Current.GetCallbackChannel<IUserCallback>();
-            try
+            User[] temp;
+            Theme theme;
+            lock(_container)
             {
-                _container.AddUser(theme, self);
+                if ((self = _container.GetUser(userName)) == null)
+                    self = new User(GenerateUniqueId(), userName, address);
+
+                theme = _container.GetTheme(themeName);
+
+                self.Callback = OperationContext.Current.GetCallbackChannel<IUserCallback>();
+                try
+                {
+                    _container.AddUser(theme, self);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new FaultException<InvalidOperationException>(e);
+                }
+                temp = new[] { self }.Concat(_container.GetUsers(theme).Where(u => !self.Equals(u))).ToArray();
             }
-            catch(InvalidOperationException e)
-            {
-                UserFault fault = new UserFault { Reason = e.Message};
-                Console.WriteLine("Faulted!");
-                throw new FaultException<UserFault>(fault);
-            }
-            var temp = new[] {self}.Concat(_container.GetUsers(theme).Where(u => !self.Equals(u))).ToArray();
 
             Console.WriteLine("Username {0} got {1} new users.", userName, temp.Length); 
             
@@ -62,28 +65,33 @@ namespace CentralServiceProject
                                             try
                                             {
                                                 if (!user.Equals(self))
-                                                    user.Callback.OnUserJoined(self);
+                                                {
+                                                    if(((ICommunicationObject)user.Callback).State == CommunicationState.Opened)
+                                                        user.Callback.OnUserJoined(self);
+                                                    else
+                                                        toRemove.AddLast(user);
+                                                }
                                             }
                                             catch(TimeoutException e)
                                             {
                                                 Console.WriteLine(e.Message);
-                                                toRemove.Remove(user);
+                                                toRemove.AddLast(user);
                                             }
                                             catch(CommunicationException e)
                                             {
                                                 Console.WriteLine(e.Message);
-                                                toRemove.Remove(user);
+                                                toRemove.AddLast(user);
                                             }
                                             catch(ObjectDisposedException e)
                                             {
                                                 Console.WriteLine(e.Message);
-                                                toRemove.Remove(user);
+                                                toRemove.AddLast(user);
                                             }
                                         }
 
                                         foreach (User user in toRemove)
                                         {
-                                            _container.RemoveUser(theme, user);
+                                            LogOff(theme.Name, user.Id);
                                         }
                                       });
 
@@ -99,22 +107,62 @@ namespace CentralServiceProject
             Console.WriteLine("LogOff Enter");
 
             User user;
-            try
+            Theme theme;
+            lock (_container)
             {
-                user = _container.GetUser(id);
+                try
+                {
+                    user = _container.GetUser(id);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new FaultException<InvalidOperationException>(e);
+                }
+
+                Console.WriteLine("User {0}", user.Name);
+
+                theme = _container.GetTheme(themeName);
+                _container.RemoveUser(theme, user);
             }
-            catch (InvalidOperationException e)
+
+            Thread t = new Thread(() =>
             {
-                UserFault fault = new UserFault { Reason = e.Message };
-                throw new FaultException<UserFault>(fault);
-            }
+                LinkedList<User> toRemove = new LinkedList<User>();
+                foreach (User user1 in _container.GetUsers(theme))
+                {
+                    try
+                    {
+                        if (((ICommunicationObject)user.Callback).State == CommunicationState.Opened)
+                            user1.Callback.OnUserLeft(user);
+                        else
+                            toRemove.AddLast(user1);
+                    }
+                    catch (TimeoutException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        toRemove.AddLast(user1);
+                    }    
+                    catch (CommunicationException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        toRemove.AddLast(user1);
+                    }
+                    catch (ObjectDisposedException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        toRemove.AddLast(user1);
+                    }
+                }
 
-            Console.WriteLine("User {0}", user.Name);
+                foreach(User user1 in toRemove)
+                {
+                    LogOff(theme.Name, user1.Id);
+                }
+            });
 
-            var theme = _container.GetTheme(themeName);
-            _container.RemoveUser(theme, user);
+            t.Start();
 
-            Console.WriteLine("LogOn Exit");
+            Console.WriteLine("LogOff Exit");
         }
 
         #endregion
