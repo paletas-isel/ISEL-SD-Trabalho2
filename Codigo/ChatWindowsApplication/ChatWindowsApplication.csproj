@@ -110,6 +110,9 @@
     <None Include="Service References\ChatService\service1.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\ChatService\System.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

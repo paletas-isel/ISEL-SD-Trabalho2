@@ -126,53 +126,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_SendMessage_output_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_ReceiveMessage_Input_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_ReceiveMessage_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -241,7 +195,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_Subscribe_UserFaultFault_Fault">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_Subscribe_InvalidOperationExceptionFault_Fault">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -310,7 +264,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_Unsubscribe_UserFaultFault_Fault">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_Unsubscribe_InvalidOperationExceptionFault_Fault">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -407,20 +361,15 @@
       <xsd:import namespace="http://tempuri.org/" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/ChatServiceProject" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IChatService_SendMessage_InputMessage">
     <wsdl:part name="parameters" element="tns:SendMessage" />
   </wsdl:message>
-  <wsdl:message name="IChatService_SendMessage_OutputMessage">
-    <wsdl:part name="parameters" element="tns:SendMessageResponse" />
-  </wsdl:message>
   <wsdl:message name="IChatService_ReceiveMessage_InputMessage">
     <wsdl:part name="parameters" element="tns:ReceiveMessage" />
-  </wsdl:message>
-  <wsdl:message name="IChatService_ReceiveMessage_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReceiveMessageResponse" />
   </wsdl:message>
   <wsdl:message name="IChatService_Subscribe_InputMessage">
     <wsdl:part name="parameters" element="tns:Subscribe" />
@@ -428,8 +377,8 @@
   <wsdl:message name="IChatService_Subscribe_OutputMessage">
     <wsdl:part name="parameters" element="tns:SubscribeResponse" />
   </wsdl:message>
-  <wsdl:message name="IChatService_Subscribe_UserFaultFault_FaultMessage">
-    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/CentralServiceProject" name="detail" element="q1:UserFault" />
+  <wsdl:message name="IChatService_Subscribe_InvalidOperationExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/System" name="detail" element="q1:InvalidOperationException" />
   </wsdl:message>
   <wsdl:message name="IChatService_Unsubscribe_InputMessage">
     <wsdl:part name="parameters" element="tns:Unsubscribe" />
@@ -437,8 +386,8 @@
   <wsdl:message name="IChatService_Unsubscribe_OutputMessage">
     <wsdl:part name="parameters" element="tns:UnsubscribeResponse" />
   </wsdl:message>
-  <wsdl:message name="IChatService_Unsubscribe_UserFaultFault_FaultMessage">
-    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/CentralServiceProject" name="detail" element="q2:UserFault" />
+  <wsdl:message name="IChatService_Unsubscribe_InvalidOperationExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/System" name="detail" element="q2:InvalidOperationException" />
   </wsdl:message>
   <wsdl:message name="IChatService_GetThemes_InputMessage">
     <wsdl:part name="parameters" element="tns:GetThemes" />
@@ -452,21 +401,19 @@
   <wsdl:portType name="IChatService">
     <wsdl:operation name="SendMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IChatService/SendMessage" message="tns:IChatService_SendMessage_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/SendMessageResponse" message="tns:IChatService_SendMessage_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ReceiveMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IChatService/ReceiveMessage" message="tns:IChatService_ReceiveMessage_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/ReceiveMessageResponse" message="tns:IChatService_ReceiveMessage_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Subscribe">
       <wsdl:input wsaw:Action="http://tempuri.org/IChatService/Subscribe" message="tns:IChatService_Subscribe_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IChatService/SubscribeResponse" message="tns:IChatService_Subscribe_OutputMessage" />
-      <wsdl:fault wsaw:Action="http://tempuri.org/IChatService/SubscribeUserFaultFault" name="UserFaultFault" message="tns:IChatService_Subscribe_UserFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IChatService/SubscribeInvalidOperationExceptionFault" name="InvalidOperationExceptionFault" message="tns:IChatService_Subscribe_InvalidOperationExceptionFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="Unsubscribe">
       <wsdl:input wsaw:Action="http://tempuri.org/IChatService/Unsubscribe" message="tns:IChatService_Unsubscribe_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IChatService/UnsubscribeResponse" message="tns:IChatService_Unsubscribe_OutputMessage" />
-      <wsdl:fault wsaw:Action="http://tempuri.org/IChatService/UnsubscribeUserFaultFault" name="UserFaultFault" message="tns:IChatService_Unsubscribe_UserFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IChatService/UnsubscribeInvalidOperationExceptionFault" name="InvalidOperationExceptionFault" message="tns:IChatService_Unsubscribe_InvalidOperationExceptionFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetThemes">
       <wsdl:input wsaw:Action="http://tempuri.org/IChatService/GetThemes" message="tns:IChatService_GetThemes_InputMessage" />
@@ -485,10 +432,6 @@
         <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_SendMessage_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
-      <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_SendMessage_output_policy" />
-        <soap12:body use="literal" />
-      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="ReceiveMessage">
       <soap12:operation soapAction="http://tempuri.org/IChatService/ReceiveMessage" style="document" />
@@ -496,10 +439,6 @@
         <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_ReceiveMessage_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
-      <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_ReceiveMessage_output_policy" />
-        <soap12:body use="literal" />
-      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="Subscribe">
       <soap12:operation soapAction="http://tempuri.org/IChatService/Subscribe" style="document" />
@@ -511,9 +450,9 @@
         <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_Subscribe_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
-      <wsdl:fault name="UserFaultFault">
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_Subscribe_UserFaultFault_Fault" />
-        <soap12:fault use="literal" name="UserFaultFault" namespace="" />
+      <wsdl:fault name="InvalidOperationExceptionFault">
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_Subscribe_InvalidOperationExceptionFault_Fault" />
+        <soap12:fault use="literal" name="InvalidOperationExceptionFault" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="Unsubscribe">
@@ -526,9 +465,9 @@
         <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_Unsubscribe_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
-      <wsdl:fault name="UserFaultFault">
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_Unsubscribe_UserFaultFault_Fault" />
-        <soap12:fault use="literal" name="UserFaultFault" namespace="" />
+      <wsdl:fault name="InvalidOperationExceptionFault">
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_Unsubscribe_InvalidOperationExceptionFault_Fault" />
+        <soap12:fault use="literal" name="InvalidOperationExceptionFault" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="GetThemes">

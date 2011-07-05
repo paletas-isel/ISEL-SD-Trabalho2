@@ -76,51 +76,6 @@ namespace ChatWindowsApplication.ChatService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserFault", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
-    [System.SerializableAttribute()]
-    public partial class UserFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ReasonField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Reason {
-            get {
-                return this.ReasonField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ReasonField, value) != true)) {
-                    this.ReasonField = value;
-                    this.RaisePropertyChanged("Reason");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Theme", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
     [System.SerializableAttribute()]
     public partial class Theme : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -184,18 +139,18 @@ namespace ChatWindowsApplication.ChatService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ChatService.IChatService", CallbackContract=typeof(ChatWindowsApplication.ChatService.IChatServiceCallback))]
     public interface IChatService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SendMessage", ReplyAction="http://tempuri.org/IChatService/SendMessageResponse")]
-        bool SendMessage(string message);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/SendMessage")]
+        void SendMessage(string message);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/ReceiveMessage", ReplyAction="http://tempuri.org/IChatService/ReceiveMessageResponse")]
-        bool ReceiveMessage(ChatWindowsApplication.ChatService.Message message);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/ReceiveMessage")]
+        void ReceiveMessage(ChatWindowsApplication.ChatService.Message message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Subscribe", ReplyAction="http://tempuri.org/IChatService/SubscribeResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ChatWindowsApplication.ChatService.UserFault), Action="http://tempuri.org/IChatService/SubscribeUserFaultFault", Name="UserFault", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
+        [System.ServiceModel.FaultContractAttribute(typeof(System.InvalidOperationException), Action="http://tempuri.org/IChatService/SubscribeInvalidOperationExceptionFault", Name="InvalidOperationException", Namespace="http://schemas.datacontract.org/2004/07/System")]
         void Subscribe(string username, string theme, string language);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Unsubscribe", ReplyAction="http://tempuri.org/IChatService/UnsubscribeResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ChatWindowsApplication.ChatService.UserFault), Action="http://tempuri.org/IChatService/UnsubscribeUserFaultFault", Name="UserFault", Namespace="http://schemas.datacontract.org/2004/07/CentralServiceProject")]
+        [System.ServiceModel.FaultContractAttribute(typeof(System.InvalidOperationException), Action="http://tempuri.org/IChatService/UnsubscribeInvalidOperationExceptionFault", Name="InvalidOperationException", Namespace="http://schemas.datacontract.org/2004/07/System")]
         void Unsubscribe();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetThemes", ReplyAction="http://tempuri.org/IChatService/GetThemesResponse")]
@@ -237,12 +192,12 @@ namespace ChatWindowsApplication.ChatService {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public bool SendMessage(string message) {
-            return base.Channel.SendMessage(message);
+        public void SendMessage(string message) {
+            base.Channel.SendMessage(message);
         }
         
-        public bool ReceiveMessage(ChatWindowsApplication.ChatService.Message message) {
-            return base.Channel.ReceiveMessage(message);
+        public void ReceiveMessage(ChatWindowsApplication.ChatService.Message message) {
+            base.Channel.ReceiveMessage(message);
         }
         
         public void Subscribe(string username, string theme, string language) {

@@ -25,6 +25,7 @@
     <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="bb7d1879-a654-4446-a33d-c1d523e16af3" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="3ffde145-81a4-4f04-aae5-a38f38700b84" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
     <MetadataFile FileName="ChatServiceProject.xsd" MetadataType="Schema" ID="fa6fab9c-d624-4647-9d2c-c23bae433260" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
+    <MetadataFile FileName="System.xsd" MetadataType="Schema" ID="1f714585-2e53-402a-b7fc-12a0d7fcd99b" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
     <MetadataFile FileName="CentralServiceProject.xsd" MetadataType="Schema" ID="f05e4db1-94ba-4090-8a7c-555e51f76293" SourceId="1" SourceUrl="http://localhost:8003/ChatService/mex" />
   </Metadata>
   <Extensions>

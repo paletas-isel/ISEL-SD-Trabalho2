@@ -84,6 +84,9 @@
     <None Include="Service References\ChatServiceRemote\service21.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\ChatServiceRemote\System.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\Tracker\CentralServiceProject.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -98,6 +101,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Tracker\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Tracker\System.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Translator\ChatServiceProject.Translator.GetTranslationsResponse.datasource">

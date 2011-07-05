@@ -9,18 +9,18 @@ namespace ChatServiceProject
     [ServiceContract(CallbackContract = typeof(IMessageReceivedChannel))]
     public interface IChatService
     {
-        [OperationContract]
-        bool SendMessage(string message);
+        [OperationContract(IsOneWay = true)]
+        void SendMessage(string message);
+
+        [OperationContract(IsOneWay = true)]
+        void ReceiveMessage(Message message);
 
         [OperationContract]
-        bool ReceiveMessage(Message message);
-
-        [OperationContract]
-        [FaultContract(typeof(UserFault))]
+        [FaultContract(typeof(InvalidOperationException))]
         void Subscribe(string username, string theme, string language);
 
         [OperationContract]
-        [FaultContract(typeof(UserFault))]
+        [FaultContract(typeof(InvalidOperationException))]
         void Unsubscribe();
 
         [OperationContract]
